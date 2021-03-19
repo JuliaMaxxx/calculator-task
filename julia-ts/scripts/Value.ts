@@ -1,4 +1,7 @@
-// Числовое значение
+// создаем свой тип
+export let ValueConstructor: Value;
+
+// числовое значение
 export class Value 
 {
     value: number = 0;
@@ -14,6 +17,31 @@ export class Value
         }
     }
 
+    // возвращает примитивное значение
+    valueOf()
+	{
+		return this.value * ( this.negative ? -1 : 1 );
+	}
+
+    // возвращает строковое представление
+    toString()
+	{
+		let asString: string = this.valueOf().toFixed( this.fractionDigits );
+		
+		if ( this.withDot && !asString.includes( '.' ) )
+		{
+			asString += '.';
+		}
+		
+		if ( this.negative && asString[0] !== '-' )
+		{
+			asString = '-' + asString;
+		}
+		
+		return asString;
+	}
+
+    // устанавливает значение
     set( val: string | number )
 	{
 		if ( typeof val === 'number' )
@@ -26,6 +54,25 @@ export class Value
 		}
 	}
 
+    // возвращает знак числа
+    getNegative()
+	{
+		return this.negative;
+	}
+
+    //устанавливает знак числа
+    setNegative( state: boolean = true )
+	{
+		this.negative = state;
+	}
+
+    // устанавливает наличие точки в числе
+    setDot( state: boolean = true )
+	{
+		this.withDot = state;
+	}
+
+    // устанавливает значение из числа
     _setFromNumber( val: number )
 	{
 		const asString: string = String( val );
@@ -46,6 +93,7 @@ export class Value
 		this.value = Math.abs( val );
 	}
 
+    // устанавливает значение из строки
     _setFromString( val: string )
 	{
 		if ( val === '' )
